@@ -2,7 +2,7 @@
 
 A drop-in replacement mainboard for the 1998 Tiger Electronics Furby, powered by a Raspberry Pi Zero 2 W.
 
-![FurPy board](https://github.com/gsswrk/FurPy/assets/26857790/cf27e0b5-9f9a-42a9-9bc4-a1816d970fae)
+![FurPy v2 PCB 3D render](assets/furpy_v2_3d.jpg)
 
 > Follow progress on the blog: [gsswrk.com/posts/furpy-redux](https://gsswrk.com/posts/furpy-redux/)
 
@@ -27,7 +27,7 @@ On top of that, FurPy adds:
 - I2S MEMS microphone (SPH0645LM4H) for always-on voice input
 - LSM6DSOX IMU replacing the original tilt ball switch
 - USB-C power input with polyfuse protection
-- LiPo battery header (optional, for wireless operation)
+- LiPo battery support with IP5306 charge/boost IC and JST-PH header
 - WiFi and Bluetooth via the RPi Zero 2 W
 
 ---
@@ -42,7 +42,13 @@ On top of that, FurPy adds:
 
 **4. Cost effective.** Target bill of materials under $25 at quantity via JLCPCB PCBA. You supply the Raspberry Pi Zero 2 W and the Furby.
 
-**5. Power efficient.** Runs on USB-C (5V/2A). Optional LiPo battery header on the board for wireless operation.
+**5. Power efficient.** Runs on USB-C (5V/2A). Onboard LiPo battery support via IP5306 for wireless operation.
+
+---
+
+## Schematic
+
+![FurPy v2 Schematic](assets/furpy_v2_schematic.png)
 
 ---
 
@@ -50,17 +56,18 @@ On top of that, FurPy adds:
 
 ### Components (on the FurPy board)
 
-| Function | Part |
-|---|---|
-| Motor driver | TB6612FNG (SSOP-24) |
-| Audio amplifier | MAX98357A (I2S, drives original 8 ohm speaker) |
-| MEMS microphone | SPH0645LM4H-1 (I2S) |
-| IMU / motion | LSM6DSOX (replaces tilt ball switch) |
-| Gear signal conditioning | 74AHCT1G14GW Schmitt trigger |
-| Power input | USB-C + RXEF030 3A polyfuse |
-| IR transmit | TSAL6400 IR LED (BCM 12, 38 kHz carrier) |
-| IR receive | TSOP38238 demodulator (BCM 27) |
-| LiPo (optional) | JST-PH 2-pin header, IP5306 power path IC |
+| Function | Part | LCSC |
+|---|---|---|
+| Motor driver | TB6612FNG (SSOP-24) | C141517 |
+| Audio amplifier | MAX98357A (I2S, drives original 8 ohm speaker) | C910544 |
+| MEMS microphone | SPH0645LM4H-B-8 (I2S) | C19190864 |
+| IMU / motion | LSM6DSOXTR (replaces tilt ball switch) | C481766 |
+| Gear signal conditioning | 74AHCT1G14GW Schmitt trigger | C12505 |
+| IR transmit LED | TSAL6400 | C94857 |
+| IR receiver | TSOP38238 demodulator (BCM 27) | C141632 |
+| Power input | USB-C (TYPE-C-31-M-12) + RXEF030 3A polyfuse | C18384 |
+| LiPo PMIC | IP5306 charge + boost + power path | C181692 |
+| NPN transistor | MMBT3904 (IR LED drive) | C20526 |
 
 You supply: **Raspberry Pi Zero 2 W**
 
@@ -137,8 +144,9 @@ def on_ir(payload):
 
 - [x] Original SPC81A port map decoded from Dave Hampton 1998 source
 - [x] All Furby sensors and actuators mapped to RPi GPIO
-- [x] PCB schematic complete (KiCad, ERC clean)
-- [x] PCB layout routed
+- [x] PCB schematic complete (EasyEDA Pro, ERC clean)
+- [x] PCB layout complete (EasyEDA Pro, 2-layer, 84.6x68.3mm Furby outline)
+- [x] Full BOM with verified LCSC part numbers
 - [ ] PCB ordered from JLCPCB
 - [ ] Hardware validated on physical board
 - [ ] HAL and firmware complete
